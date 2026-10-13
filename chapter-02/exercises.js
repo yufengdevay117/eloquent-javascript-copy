@@ -93,21 +93,22 @@ LOGS =>
 
 */
 
-function drawChessboard(x = 8) {
-  let board = "";
-
-  for (let i = 0; i < x; i++) {
-    for (let j = 0; j < x; j++) {
-      if ((i + j) % 2 === 0) {
-        board += " ";
-      } else {
-        board += "#";
-      }
-    }
-    board += "\n";
+function drawChessboard(x = 8,  row = 0, col = 0, boardStr = "") {
+  if (row === x) {
+    console.log(boardStr);
+    return;
   }
 
-  return board;
+  // when the current row reaches the end, append a newline and move to the next row
+  if (col === x) {
+    return drawChessboard(x, row + 1, 0, boardStr + "\n");
+  }
+
+  // determine whether to put a space or a '#' based on coordinates
+  const char = (row + col) % 2 === 0 ? " " : "#";
+
+  // recursion: move to the next column
+  return drawChessboard(x, row, col + 1, boardStr + char);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
