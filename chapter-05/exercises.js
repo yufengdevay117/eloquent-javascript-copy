@@ -2,32 +2,54 @@
 // flatten /////////////////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////////////////////////
 
-function flatten() {
-
+function flatten(array) {
+  // Use reduce to combine elements into a single array accumulation
+  return array.reduce((accumulator, currentArray) => {
+    return accumulator.concat(currentArray);
+  }, []);
 }
 
 // /////////////////////////////////////////////////////////////////////////////
 // loop ////////////////////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////////////////////////
 
-function loop() {
-
+function loop(value, test, update, body) {
+  for (let i = value; test(i); i = update(i)) {
+    body(i);
+  }
 }
 
 // /////////////////////////////////////////////////////////////////////////////
 // every ///////////////////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////////////////////////
 
-function every() {
-
+function every(array, predicate) {
+  // Loop through every item in the array
+  for (let element of array) {
+    // If the predicate function returns false for any item, exit early
+    if (!predicate(element)) return false;
+  }
+  // If we made it through without returning false, everything passed!
+  return true;
 }
 
 // /////////////////////////////////////////////////////////////////////////////
 // dominantDirection ///////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////////////////////////
 
-function dominantDirection() {
+function dominantDirection(text) {
+  let directions = countBy(text, char => {
+    let script = characterScript(char.codePointAt(0));
+    return script ? script.direction : "none";
+  }).filter(({name}) => name != "none"); // 2. Filter out non-script characters
 
+  // If there are no meaningful script characters, default to left-to-right
+  if (directions.length == 0) return "ltr";
+
+  // 3. Use reduce to find the direction with the highest character count
+  return directions.reduce((max, current) => {
+    return current.count > max.count ? current : max;
+  }).name;
 }
 
 // /////////////////////////////////////////////////////////////////////////////
